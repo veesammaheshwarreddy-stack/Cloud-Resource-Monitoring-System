@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Resource Monitoring Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #edf2f7;
+            padding: 20px
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: auto
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 15px
+        }
+        
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 7px #0001
+        }
+        
+        h1 {
+            color: #2457a7
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cloud Resource Monitoring Dashboard</h1>
+        <p>This demo shows browser information, not actual cloud server metrics.</p>
+        <div class="grid">
+            <div class="card">
+                <h3>CPU Threads</h3>
+                <h2 id="cpu">-</h2>
+            </div>
+            <div class="card">
+                <h3>Device Memory</h3>
+                <h2 id="memory">Unavailable</h2>
+            </div>
+            <div class="card">
+                <h3>Network Status</h3>
+                <h2 id="network">-</h2>
+            </div>
+            <div class="card">
+                <h3>Page Memory</h3>
+                <h2 id="pageMemory">Unavailable</h2>
+            </div>
+        </div>
+    </div>
+    <script>
+        function update() {
+            document.getElementById('cpu').textContent =
+                navigator.hardwareConcurrency || 'Unavailable';
+            document.getElementById('memory').textContent =
+                navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Unavailable';
+            document.getElementById('network').textContent =
+                navigator.onLine ? 'Online' : 'Offline';
+            let memory = performance.memory;
+            document.getElementById('pageMemory').textContent =
+                memory ? (memory.usedJSHeapSize / 1048576).toFixed(1) + ' MB' : 'Unavailable';
+        }
+        update();
+        window.addEventListener('online', update);
+        window.addEventListener('offline', update);
+        setInterval(update, 3000);
+    </script>
+</body>
+
+</html>
